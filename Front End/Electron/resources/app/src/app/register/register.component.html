@@ -1,0 +1,81 @@
+<div class="w3-container w3-content w3-center w3-padding-64" style="max-width:1000px; padding:5%">
+    <mat-card >
+    <h2 *ngIf="!registered"  class="w3-wide"><b> Registration</b></h2>
+    <p *ngIf="!registered"  class="w3-opacity"><i>Fill out your information below</i></p>
+    <h2  *ngIf="registered" class="w3-wide"><b> Registeration successful!</b></h2>
+    <p  *ngIf="registered" class="w3-opacity"><i>You may now login.</i></p>
+      <form #formReg="ngForm">
+        <div>
+          <mat-form-field *ngIf="!registered"  appearance="outline" style="width:500px">
+              <mat-label>Title</mat-label>
+              <mat-select name="Title" #Title="ngModel" [(ngModel)]="service.formDataRegister.TitleID" required>
+                  <mat-option  *ngFor="let obj of service.listTitles" value="{{obj.TitleID}}">{{obj.Title1}}</mat-option>
+              </mat-select>
+          </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field *ngIf="!registered"  appearance="outline" style="width:500px">
+              <mat-label>Name</mat-label>
+              <input  required name="Name" #Name="ngModel" [(ngModel)]="service.formDataRegister.Name" matInput autocomplete="off">
+            </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field *ngIf="!registered"  appearance="outline" style="width:500px">
+            <mat-label>Surname</mat-label>
+            <input required name="Surname" #Surname="ngModel" [(ngModel)]="service.formDataRegister.Surname" matInput autocomplete="off">
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field  *ngIf="!registered" appearance="outline" style="width:500px">
+              <mat-label>Date of Birth</mat-label>
+              <input name="DOB" type="date" #DOB="ngModel" [(ngModel)]="service.formDataRegister.DOB" matInput  required>
+            </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field *ngIf="!registered"  appearance="outline" style="width:500px">
+              <mat-label>Gender</mat-label>
+              <mat-select name="Gender" #Gender="ngModel" [(ngModel)]="service.formDataRegister.GenderID" required>
+                  <mat-option  *ngFor="let obj of service.listGender" value="{{obj.GenderID}}">{{obj.Gender1}}</mat-option>
+              </mat-select>
+          </mat-form-field>
+        </div>
+        <span *ngIf="!registered" >Account Details</span>
+        <div>
+            <mat-form-field *ngIf="!registered"  appearance="outline" style="width:500px">
+              <mat-label>Email Address</mat-label>
+              <input  name="UserEmail" #UserEmail="ngModel" [(ngModel)]="service.formDataRegister.UserEmail" matInput placeholder="pat@example.com"  required autocomplete="off">
+              <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+            </mat-form-field>
+        </div>
+        <div>
+
+        <mat-form-field *ngIf="!registered"  appearance="outline" style="width:500px">
+          <mat-label>Password</mat-label>
+            <input required name="UserPassword" #UserPassword="ngModel" [(ngModel)]="service.formDataRegister.UserPassword"   matInput [type]="hide ? 'password' : 'text'">
+            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+        </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field *ngIf="!registered"  appearance="outline" style="width:500px">
+          <mat-label>Type of User</mat-label>
+          <mat-select name="TypeID" #TypeID="ngModel" [(ngModel)]="service.formDataRegister.TypeID" required>
+              <mat-option  *ngFor="let obj of service.listUserTypes" value="{{obj.TypeID}}">{{obj.TypeDescription}}</mat-option>
+          </mat-select>
+      </mat-form-field>
+    </div>
+    <div>
+      <button style="text-align: center; font-size: medium; margin:20px"   routerLink='/Login' mat-raised-button  type="submit"  *ngIf="!registered" >Back</button>
+      <button style="text-align: center; font-size: medium; margin:20px" mat-raised-button   [disabled]="formReg.invalid"  *ngIf="!registered" (click)="onRegister(formReg)" type="button"  >Register</button>
+    </div>
+    <div>
+      <button style="text-align: center; font-size: medium; margin:20px"   routerLink='/Login' mat-raised-button  type="submit" *ngIf="registered" >Login</button>
+    </div>
+  </form>
+
+</mat-card>
+</div>
+
+
+

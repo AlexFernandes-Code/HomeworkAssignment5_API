@@ -1,0 +1,163 @@
+{
+	"info": {
+		"_postman_id": "804949b4-d88f-4fc7-be50-a434b0391c55",
+		"name": "HWA1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. GetDataFromOneTable.",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44366/api/getRacers",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44366",
+					"path": [
+						"api",
+						"getRacers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2. GetDataFromTwoTables",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44366/api/getRacersAndTeam",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44366",
+					"path": [
+						"api",
+						"getRacersAndTeam"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3. PostDataToOneTable",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n        \"Name\": \"Mercedes\",\r\n        \"Country\": \"Germany\",\r\n        \"Racers\": [\r\n            {\r\n                \"Name\": \"Bobby\",\r\n                \"Age\": 21\r\n            },\r\n            {\r\n                \"Name\": \"Johnny\",\r\n                \"Age\": 38\r\n            }\r\n        ]\r\n    },",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44366/api/PostNewTeamBrand",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44366",
+					"path": [
+						"api",
+						"PostNewTeamBrand"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4. UpdateDataFromOneTable",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Name\": \"Bob\",\n\t\"Surname\" : \"Uno Santos\",\n\t\"Age\": 21,\n\t\"TeamBrandID\" : \"2\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44366/api/UpdateRacer/2",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44366",
+					"path": [
+						"api",
+						"UpdateRacer",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "5.  DeleteDataFromOneTable",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44366/api/DeleteCar/1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44366",
+					"path": [
+						"api",
+						"DeleteCar",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

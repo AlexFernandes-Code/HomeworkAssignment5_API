@@ -1,0 +1,52 @@
+
+<form #form="ngForm"  autocomplete="off">
+    <div class="w3-container w3-content w3-center w3-padding-64" style="max-width:800px;text-align: center; margin:auto; padding:5%">
+        <mat-card>
+            <h2 class="w3-wide"><b>Edit Product</b></h2>
+            <p class="w3-opacity"><i>Enter Product's Updated Details</i></p>
+            <div>
+                <mat-form-field appearance="outline" hidden>
+                    <mat-label> Product ID</mat-label>
+                    <input  name="ProductID" #ProductID="ngModel" [(ngModel)]="service.formDataProduct.ProductID" matInput  >
+                </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field appearance="outline">
+                  <mat-label> Product Name</mat-label>
+                  <input name="ProductName" #ProductName="ngModel" [(ngModel)]="service.formDataProduct.ProductName" matInput placeholder="Soccer Package..." required>
+                </mat-form-field>
+          </div>
+          <div>
+              <mat-form-field appearance="outline">
+                  <mat-label>Price</mat-label>
+                  <input name="Price" step="0.01" min="0"  oninput="this.value = Math.abs(this.value)" type="number" #Price="ngModel" [(ngModel)]="service.formDataProduct.Price" matInput required>
+                </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field appearance="outline">
+                <mat-label>Quantity</mat-label>
+                <input name="Quantity" min="0"  oninput="this.value = Math.abs(this.value)" type="number" #Quantity="ngModel" [(ngModel)]="service.formDataProduct.Quantity" matInput required>
+              </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field appearance="outline">
+                <mat-label>Image Link</mat-label>
+                <input name="Image" #Image="ngModel" [(ngModel)]="service.formDataProduct.Image" matInput required>
+              </mat-form-field>
+          </div>
+          <img style="width: 50px;height: 50px; margin:auto;" src={{service.formDataProduct.Image}}>
+          <div>
+            <mat-form-field appearance="outline">
+                <mat-label>Product Supplier</mat-label>
+                <mat-select name="SupplierID" #SupplierID="ngModel" [(ngModel)]="service.formDataProduct.SupplierID" required>
+                    <mat-option  *ngFor="let obj of service.listSupplier" [value]="obj.SupplierID">{{obj.SupplierName}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+          </div>
+          <div>
+            <button style="text-align: center; font-size: medium; margin:20px"   routerLink='/Product' mat-raised-button  type="button">Back</button>
+            <button style="text-align: center; font-size: medium; margin:20px"  routerLink='/EditProduct'  [disabled]="!form.form.valid"  mat-raised-button (click)="onSubmit(form)" type="button">Update Product</button>
+        </div>
+        </mat-card>
+    </div>
+</form>

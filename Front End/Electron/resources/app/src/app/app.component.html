@@ -1,0 +1,12 @@
+
+<router-outlet>
+    <button style="text-align: center; font-size: larger;" mat-raised-button  type="submit" routerLink='/Home'  ><strong>Home</strong></button>
+    <button style="text-align: center; font-size: larger;" routerLink='/Customer' mat-raised-button  type="submit" *ngIf="service.User?.TypeID  == 2 "><strong>Customers</strong></button>
+    <button style="text-align: center; font-size: larger;" routerLink='/Product' mat-raised-button  type="submit" *ngIf=" service.User?.TypeID  == 2 "  ><strong>Product</strong></button>
+    <button style="text-align: center; font-size: larger;" routerLink='/Supplier' mat-raised-button  type="submit" *ngIf=" service.User?.TypeID  == 2 "  ><strong>Supplier</strong></button>
+    <button style="text-align: center; font-size: larger;" routerLink='/Order' mat-raised-button  type="submit" *ngIf=" service.User?.TypeID  == 2 || service.User?.TypeID  == 1" ><strong>Order</strong></button>
+    <button style="text-align: center; font-size: larger;  position: absolute; top: 0%; right: 0%; " routerLink='/Login' mat-raised-button  type="submit"  *ngIf="!service.User"><strong>Login</strong></button>
+    <button style="text-align: center; font-size: larger;  position: absolute; top: 0%; right: 0%; " routerLink='/Home' (click)="onSubmit()" mat-raised-button  *ngIf="service.User" type="submit"  ><strong>Logout</strong></button>
+</router-outlet>
+
+

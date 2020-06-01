@@ -1,0 +1,32 @@
+
+<div class="row">
+  <div class="col">
+    <form #form="ngForm" style="margin:auto; padding-top: 5%;  width:80%"  autocomplete="off">
+      <mat-card style="text-align: center;">
+        <h2 class="w3-wide" ><b>Products</b></h2><a style="position: absolute; top: 0%; left: 0%;" >  <img alt="Logo" src="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/corporate-company-logo-design-template-2402e0689677112e3b2b6e0f399d7dc3_screen.jpg?ts=1561532453" width="100" height="90"></a>
+        <p class="w3-opacity" ><i>All Company Products</i></p>
+          <table class="table table-hover">
+            <th>ProductID</th>
+            <th>Product Name</th>
+            <th>Product Image</th>
+            <th>Price (R)</th>
+            <th>Quantity</th>
+            <th>Supplier</th>
+            <th>Update</th>
+            <th>Remove</th>
+              <tr *ngFor="let obj of service.listSupplierProduct">
+              <td >{{obj.ProductID}}</td>
+              <td >{{obj.ProductName}} </td>
+              <td ><img style="width: 50px;height: 50px;" src={{obj.Image}}></td>
+              <td >{{obj.Price}}</td>
+              <td >{{obj.Quantity}}</td>
+              <td >{{obj.SupplierName}}</td>
+           <td><button (click)="populateForm(obj)" routerLink="/EditProduct" class="btn btn-sm btn-outline-warning" type="submit">Update</button></td>
+          <td><button  (click)="onDelete(obj.ProductID)" class="btn btn-sm btn-outline-danger">Remove</button></td>
+              </tr>
+          </table>
+          <button style="text-align: center; font-size: larger;" routerLink='/AddProduct' mat-raised-button  type="submit" ><strong>Add Product</strong></button>
+      </mat-card>
+    </form>
+  </div>
+</div>

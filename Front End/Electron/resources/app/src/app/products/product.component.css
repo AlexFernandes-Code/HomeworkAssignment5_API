@@ -1,0 +1,11 @@
+.full-width-table { 
+  margin: 15px auto;
+  height:  100%;
+  table-layout: auto;
+  width: 100%;    
+}
+th{
+  font-size: larger;
+  font-weight: bold;
+  text-align: center;
+}

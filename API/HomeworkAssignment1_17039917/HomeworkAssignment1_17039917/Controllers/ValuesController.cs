@@ -6,8 +6,9 @@ using System.Data.Entity;
 using System.Web.Http;
 using HomeworkAssignment1_17039917.Models;
 using System.Web.Http.Cors;
-
-
+using Newtonsoft.Json.Linq;
+using System.Data.SqlClient;
+using System.Globalization;
 
 namespace HomeworkAssignment1_17039917.Controllers
 {
@@ -16,18 +17,14 @@ namespace HomeworkAssignment1_17039917.Controllers
     {
 
         public HomeworkAssignment3_17039917Entities2 db = new HomeworkAssignment3_17039917Entities2();
-        Authentication Auth = new Authentication();    
+        Authentication Auth = new Authentication();
 
 
-        /*---------------------------------------------------------------------------------------------------------------------------------
+    
 
-                                                                    Customers
-
-        -----------------------------------------------------------------------------------------------------------------------------------*/
-                    
         [System.Web.Http.Route("api/getCustomers")]
         [HttpGet]
-        public List<dynamic> getCustomers(string guid)
+        public object getCustomers(string guid)
         {
             if (Auth.isLoggedIn(guid))
             {
@@ -38,7 +35,7 @@ namespace HomeworkAssignment1_17039917.Controllers
                     foreach (Customer cus in customers)
                     {
                         dynamic obj = new ExpandoObject();
-                        obj.CustomerID = cus.CustomerID;           
+                        obj.CustomerID = cus.CustomerID;
                         obj.Name = cus.Name;
                         obj.Surname = cus.Surname;
                         obj.Cell = cus.Cell;
@@ -47,107 +44,26 @@ namespace HomeworkAssignment1_17039917.Controllers
                     }
                     return listCustomers;
                 }
-                catch
+                catch(Exception e)
                 {
-                    return null;
+                    dynamic obj = new ExpandoObject();
+                    obj.Error = (e.Message);
+                    return obj;
                 }
+
             }
             else
             {
-                return null;
-            }
-        }
+                dynamic obj = new ExpandoObject();
+                obj.Error = ("Invalid Token. Please Re-Login.");
+                return obj;
+            }          
 
-      
-
-        [System.Web.Http.Route("api/PostNewCustomer")]
-        [HttpPost]
-        public List<dynamic> PostNewCustomer([FromBody] Customer obj, string guid)
-        {
-            if (Auth.isLoggedIn(guid))
-            {
-                try
-                {
-
-                    db.Configuration.ProxyCreationEnabled = false;
-                    db.Customers.Add(obj);
-                    db.SaveChanges();
-                    return getCustomers(guid);
-                }
-                catch
-                {
-                    return null;
-                }
-           
-            }
-            else
-            {
-                return null;
-            }
-
-        }
-
-        [System.Web.Http.Route("api/UpdateCustomer/{id}")]
-        [HttpPut]
-        public List<dynamic> UpdateCustomer([FromBody] Customer newCustomer, int id, string guid)
-        {
-            if (Auth.isLoggedIn(guid))
-            {
-                try
-                {
-                    var result = db.Customers.Where(b => b.CustomerID == id).FirstOrDefault();
-                    result.Name = newCustomer.Name;
-                    result.Surname = newCustomer.Surname;
-                    result.Cell = newCustomer.Cell;
-                    result.Company = newCustomer.Company;
-                    db.SaveChanges();
-                    return getCustomers(guid);
-                }
-                catch
-                {
-                    return null;
-                }
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        [System.Web.Http.Route("api/DeleteCustomer/{id}")]
-        [HttpDelete]
-        public bool DeleteCustomer(int id, string guid)
-        {
-            if (Auth.isLoggedIn(guid))
-            {
-                try
-                {
-                    Customer t = db.Customers.Find(id);
-                    db.Customers.Remove(t);
-                    db.SaveChanges();
-                    return true;
-                }
-                catch
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-
-        /*---------------------------------------------------------------------------------------------------------------------------------
-
-                                                                   Suppliers
-
-       -----------------------------------------------------------------------------------------------------------------------------------*/
+        } 
 
         [System.Web.Http.Route("api/getSuppliers")]
         [HttpGet]
-        public List<dynamic> getSuppliers(string guid)
+        public object getSuppliers(string guid)
         {
             if (Auth.isLoggedIn(guid))
             {
@@ -168,106 +84,26 @@ namespace HomeworkAssignment1_17039917.Controllers
                     }
                     return listSuppliers;
                 }
-                catch
+                catch(Exception e)
                 {
-                    return null;
-                }
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        [System.Web.Http.Route("api/PostNewSupplier")]
-        [HttpPost]
-        public List<dynamic> PostNewSupplier([FromBody] Supplier obj, string guid)
-        {
-            if (Auth.isLoggedIn(guid))
-            {
-                try
-                {
-
-                    db.Configuration.ProxyCreationEnabled = false;
-                    db.Suppliers.Add(obj);
-                    db.SaveChanges();
-                    return getSuppliers(guid);
-                }
-                catch
-                {
-                    return null;
+                    dynamic obj = new ExpandoObject();
+                    obj.Error = (e.Message);
+                    return obj;
                 }
 
             }
             else
             {
-                return null;
-            }
-
+                dynamic obj = new ExpandoObject();
+                obj.Error = ("Invalid Token. Please Re-Login.");
+                return obj;
+            }  
+         
         }
-
-        [System.Web.Http.Route("api/UpdateSupplier/{id}")]
-        [HttpPut]
-        public List<dynamic> UpdateSupplier([FromBody] Supplier newSupplier, int id, string guid)
-        {
-            if (Auth.isLoggedIn(guid))
-            {
-                try
-                {
-                    var result = db.Suppliers.Where(b => b.SupplierID == id).FirstOrDefault();
-                    result.SupplierName = newSupplier.SupplierName;
-                    result.ContactPersonCell = newSupplier.ContactPersonCell;
-                    result.ContactPersonEmail = newSupplier.ContactPersonEmail;
-                    result.ContactPersonName = newSupplier.ContactPersonName;
-                    result.ContactPersonSurname = newSupplier.ContactPersonSurname;
-                    db.SaveChanges();
-                    return getSuppliers(guid);
-                }
-                catch
-                {
-                    return null;
-                }
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        [System.Web.Http.Route("api/DeleteSupplier/{id}")]
-        [HttpDelete]
-        public bool DeleteSupplier(int id, string guid)
-        {
-            if (Auth.isLoggedIn(guid))
-            {
-                try
-                {
-                    Supplier t = db.Suppliers.Find(id);
-                    db.Suppliers.Remove(t);
-                    db.SaveChanges();
-                    return true;
-                }
-                catch
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        /*---------------------------------------------------------------------------------------------------------------------------------
-
-                                                                 Products
-
-        -----------------------------------------------------------------------------------------------------------------------------------*/
-
 
         [System.Web.Http.Route("api/getProducts")]
         [HttpGet]
-        public List<dynamic> getProducts(string guid)
+        public object getProducts(string guid)
         {
             if (Auth.isLoggedIn(guid))
             {
@@ -283,153 +119,31 @@ namespace HomeworkAssignment1_17039917.Controllers
                         obj.Image = pro.Image;
                         obj.Quantity = pro.Quantity;
                         obj.Price = pro.Price;
-                        obj.SupplierID = pro.SupplierID;
-                 //       obj.Supplier = pro.Supplier;
+                        obj.SupplierID = pro.SupplierID;            
                         listProducts.Add(obj);
                     }
                     return listProducts;
                 }
-                catch
+                catch (Exception e)
                 {
-                    return null;
+                    dynamic obj = new ExpandoObject();
+                    obj.Error = (e.Message);
+                    return obj;
                 }
+
             }
             else
             {
-                return null;
-            }
-        }
-
-        [System.Web.Http.Route("api/getSupplierProducts")]
-        [HttpGet]
-        public List<dynamic> getSupplierProducts(string guid)
-        {
-            if (Auth.isLoggedIn(guid))
-            {
-                try
-                {
-                    var products = db.Products.ToList();
-                    List<dynamic> listProducts = new List<dynamic>();
-                    foreach (Product pro in products)
-                    {
-                        dynamic obj = new ExpandoObject();
-                        obj.ProductID = pro.ProductID;
-                        obj.ProductName = pro.ProductName;
-                        obj.Image = pro.Image;
-                        obj.Quantity = pro.Quantity;
-                        obj.Price = pro.Price;
-                        obj.SupplierID = pro.SupplierID;
-                        obj.SupplierName = pro.Supplier.SupplierName;
-                        obj.ContactPersonCell = pro.Supplier.ContactPersonCell;
-                        obj.ContactPersonEmail = pro.Supplier.ContactPersonEmail;
-                        obj.ContactPersonName = pro.Supplier.ContactPersonName;
-                        obj.ContactPersonSurname = pro.Supplier.ContactPersonSurname;               
-                        listProducts.Add(obj);
-                    }
-                    return listProducts;
-                }
-                catch
-                {
-                    return null;
-                }
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-
-        [System.Web.Http.Route("api/PostNewProduct")]
-        [HttpPost]
-        public List<dynamic> PostNewProduct([FromBody] Product obj, string guid)
-        {
-            if (Auth.isLoggedIn(guid))
-            {
-                try
-                {
-                    db.Configuration.ProxyCreationEnabled = false;
-                    db.Products.Add(obj);
-                    db.SaveChanges();
-                    return getProducts(guid);
-                }
-                catch
-                {
-                    return null;
-                }
-            }
-            else
-            {
-                return null;
+                dynamic obj = new ExpandoObject();
+                obj.Error = ("Invalid Token. Please Re-Login.");
+                return obj;
             }
 
         }
-
-
-        [System.Web.Http.Route("api/UpdateProduct/{id}")]
-        [HttpPut]
-        public List<dynamic> UpdateProduct([FromBody] Product obj, int id, string guid)
-        {
-            if (Auth.isLoggedIn(guid))
-            {
-                try
-                {
-                    var result = db.Products.Where(b => b.ProductID == id).FirstOrDefault();
-                    result.ProductName = obj.ProductName;
-                    result.Image = obj.Image;
-                    result.Quantity = obj.Quantity;
-                    result.Price = obj.Price;
-                    result.SupplierID = obj.SupplierID;
-                    db.SaveChanges();
-                    return getProducts(guid);
-                }
-                catch
-                {
-                    return null;
-                }
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-
-        [System.Web.Http.Route("api/DeleteProduct/{id}")]
-        [HttpDelete]
-        public bool DeleteProduct(int id, string guid)
-        {
-            if (Auth.isLoggedIn(guid))
-            {
-                try
-                {
-                    Product t = db.Products.Find(id);
-                    db.Products.Remove(t);
-                    db.SaveChanges();
-                    return true;
-                }
-                catch
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-
-        /*---------------------------------------------------------------------------------------------------------------------------------
-
-                                                                Orders
-
-        -----------------------------------------------------------------------------------------------------------------------------------*/
-
 
         [System.Web.Http.Route("api/getOrders")]
         [HttpGet]
-        public List<dynamic> getOrders(string guid)
+        public object getOrders(string guid)
         {
             if (Auth.isLoggedIn(guid))
             {
@@ -454,151 +168,21 @@ namespace HomeworkAssignment1_17039917.Controllers
                     }
                     return listOrders;
                 }
-                catch
+                catch (Exception e)
                 {
-                    return null;
+                    dynamic obj = new ExpandoObject();
+                    obj.Error = (e.Message);
+                    return obj;
                 }
             }
             else
             {
-                return null;
-            }
-        }
-
-        [System.Web.Http.Route("api/getUsers")]
-        [HttpGet]
-        public List<dynamic> getUsers(string guid)
-        {
-            if (Auth.isLoggedIn(guid))
-            {
-                try
-                {
-                    var users = db.Users.ToList();
-                    List<dynamic> listUser = new List<dynamic>();
-                    foreach (User ord in users)
-                    {
-                        dynamic obj = new ExpandoObject();
-                        obj.UserID = ord.UserID;
-                        obj.UserEmail = ord.UserEmail;
-                        obj.UserPassword = ord.UserPassword;
-                        obj.GUID = ord.GUID;
-                        obj.GUIDExpiry = ord.GUIDExpiry;     
-                        obj.Name = ord.Name;
-                        obj.Surname = ord.Surname;
-                        obj.DOB = ord.DOB;
-                        obj.TitleID = ord.TitleID;
-                        obj.GenderID = ord.GenderID;
-                        obj.TypeID = ord.TypeID;         
-                        listUser.Add(obj);
-                    }
-                    return listUser;
-                }
-                catch
-                {
-                    return null;
-                }
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-       
-
-
-        [System.Web.Http.Route("api/PostNewOrder")]
-        [HttpPost]
-        public List<dynamic> PostNewOrder([FromBody] Order obj, string guid)
-        {
-            if (Auth.isLoggedIn(guid))
-            {
-               try
-                {
-                    db.Configuration.ProxyCreationEnabled = false;
-                    db.Orders.Add(obj);
-                    db.SaveChanges();
-                    return getOrders(guid);
-                }
-                catch
-                {
-                    return null;
-                }
-            }
-            else
-            {
-                return null;
+                dynamic obj = new ExpandoObject();
+                obj.Error = ("Invalid Token. Please Re-Login.");
+                return obj;
             }
 
-        }
-
-  
-        [System.Web.Http.Route("api/UpdateOrder/{id}")]
-        [HttpPut]
-        public List<dynamic> UpdateOrder([FromBody] Order obj, int id, string guid)
-        {
-            if (Auth.isLoggedIn(guid))
-            {
-                try
-                {
-                    var result = db.Orders.Where(b => b.OrderID == id).FirstOrDefault();
-                    result.OrderID = obj.OrderID;
-                    result.OrderDate = obj.OrderDate;
-                    result.CustomerID = obj.CustomerID;
-                    result.UserID = obj.UserID;
-                    result.ProductID = obj.ProductID;
-                    db.SaveChanges();
-                    return getOrders(guid);
-                }
-                catch
-                {
-                    return null;
-                }
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        
-        [System.Web.Http.Route("api/DeleteOrder/{id}")]
-        [HttpDelete]
-        public bool DeleteOrder(int id, string guid)
-        {
-            if (Auth.isLoggedIn(guid))
-            {
-                try
-                {
-                    Order t = db.Orders.Find(id);
-                    db.Orders.Remove(t);
-                    db.SaveChanges();
-                    return true;
-                }
-                catch
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        /*---------------------------------------------------------------------------------------------------------------------------------
-
-                                                                  Users 
-
-        -----------------------------------------------------------------------------------------------------------------------------------*/
-
-        [System.Web.Http.Route("api/getStatus")]
-        [HttpGet]
-        public bool getStatus()
-        {
-            return true;
-        }
-
+        }     
 
         [System.Web.Http.Route("api/getUserTypes")]
         [HttpGet]
@@ -669,110 +253,143 @@ namespace HomeworkAssignment1_17039917.Controllers
             }
         }
 
-        /*---------------------------------------------------------------------------------------------------------------------------------
-
-                                                            User Access 
-
-        -----------------------------------------------------------------------------------------------------------------------------------*/
-
         [System.Web.Http.Route("api/Register")]
         [HttpPost]
-        public bool Register([FromBody] User obj)
+        public object Register([FromBody] User objUser)
         {
             try
             {
-                var user = db.Users.Where(x => x.UserEmail == obj.UserEmail).FirstOrDefault();
+                var user = db.Users.Where(x => x.UserEmail == objUser.UserEmail).FirstOrDefault();
                 if (user == null)
                 {                    
-                    var hashedPasswword = Auth.ComputeSha256Hash(obj.UserPassword);
+                    var hashedPasswword = Auth.ComputeSha256Hash(objUser.UserPassword);
                     User newuser = new User();
-                    newuser.UserEmail = obj.UserEmail;
+                    newuser.UserEmail = objUser.UserEmail;
                     newuser.UserPassword = hashedPasswword;            
-                    newuser.Name = obj.Name;
-                    newuser.Surname = obj.Surname;
-                    newuser.DOB = obj.DOB;
-                    newuser.TitleID = obj.TitleID;
-                    newuser.GenderID = obj.GenderID;    
-                    newuser.TypeID = obj.TypeID;
+                    newuser.Name = objUser.Name;
+                    newuser.Surname = objUser.Surname;
+                    newuser.DOB = objUser.DOB;
+                    newuser.TitleID = objUser.TitleID;
+                    newuser.GenderID = objUser.GenderID;    
+                    newuser.TypeID = objUser.TypeID;
                     db.Users.Add(newuser);
                     db.SaveChanges();
-                    return true; 
+                    dynamic obj = new ExpandoObject();
+                    obj.Message = ("Registration successful. Welcome " + newuser.Name + " " + newuser.Surname + ".");
+                    return obj;
                 }
                 else
                 {
-                    return false;
+                    dynamic obj = new ExpandoObject();
+                    obj.Error = ("Username has already been used. Please use a unique username.");
+                    return obj;
                 }
-
             }
-            catch
+            catch(Exception e)
             {
-               
-            }
-            return false;
+                dynamic obj = new ExpandoObject();
+                obj.Error = (e.Message);
+                return obj;
+            }       
         }
 
 
         [System.Web.Http.Route("api/Login")]
         [HttpPost]
-        public IHttpActionResult Login([FromBody] User obj)
+        public object Login([FromBody] User objUser)
         {
             try
             {      
-                if (obj != null)
+                if (objUser != null)
                 {
-                   User user = Auth.Login(obj);
-
-                   return Ok(user);
+                    dynamic user = new ExpandoObject();
+                    user = Auth.Login(objUser);
+                   return user;
+                }
+                else
+                {
+                    dynamic obj = new ExpandoObject();
+                    obj.Error = ("Please try again.");
+                    return obj;
                 }
             }
-            catch 
+            catch (Exception e)
             {
-
-            }
-            return BadRequest("Incorrect Login details");
+                dynamic obj = new ExpandoObject();
+                obj.Error = (e.Message);
+                return obj;
+            }         
         }
 
 
         [System.Web.Http.Route("api/Logout")]
         [HttpGet]
-        public User Logout(string guid)
-        {          
-            if (guid != null)
+        public object Logout(string guid)
+        {
+            try
             {
-                User user = Auth.Logout(guid);
-                return user;
+                if (Auth.Logout(guid))
+                {
+                    dynamic obj = new ExpandoObject();
+                    obj.Message = ("You have been logged out.");
+                    return obj;
+                }
+                else
+                {
+                    dynamic obj = new ExpandoObject();
+                    obj.Error = ("Please try again.");
+                    return obj;
+                }
             }
-            else
+            catch (Exception e)
             {
-                return null;
+                dynamic obj = new ExpandoObject();
+                obj.Error = (e.Message);
+                return obj;
             }
-
-           
         }
+
 
         [System.Web.Http.Route("api/isLoggedIn")]
         [HttpGet]
-        public bool isLoggedIn(string guid)
+        public IHttpActionResult isLoggedIn(string guid)
         {
             if (guid != null)
             {        
                 if (Auth.isLoggedIn(guid))
                 {
-                    return true;
+                    return Ok(true);
                 }
                 else
                 {
-                    return false ;
+                    return BadRequest();
                 }
 
             }
-            return false; 
+            return BadRequest(); 
         }
 
-
-
-
-
+        [System.Web.Http.Route("api/getReportData")]
+        [HttpGet]
+        public List<JObject> getReportData()
+        {
+       
+                SqlConnection myConnection = new SqlConnection("Data Source=.;Initial Catalog=HomeworkAssignment3_17039917;Integrated Security=True");
+                List<JObject> listReportData = new List<JObject>();
+                myConnection.Open();
+                SqlCommand myReadCommand = new SqlCommand("SELECT CONVERT(DATE, OrderDate, 101) AS OrderDate , COUNT([Order].OrderID) AS Orders FROM [Order] GROUP BY OrderDate", myConnection);
+                SqlDataReader myReader = myReadCommand.ExecuteReader();
+                listReportData.Clear();
+                while (myReader.Read())
+                {
+                    dynamic obj = new JObject();
+                    obj.ReportLabels = myReader["OrderDate"].ToString() ;        
+                    obj.ReportData = (myReader["Orders"]).ToString();
+                listReportData.Add(obj);
+                }
+                myConnection.Close();
+                return listReportData;        
+        }
 
     }
 

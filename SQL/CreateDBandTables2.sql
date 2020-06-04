@@ -184,6 +184,106 @@ CREATE TABLE [Order] (
 	[ProductID] [int] FOREIGN KEY REFERENCES [Product]([ProductID]),	
 );
 
+insert into [Order]
+values ('3/22/2020', '4', '2', '1');
+insert into [Order]
+values ('3/6/2020', '3', '1', '1');
+insert into [Order]
+values ('3/3/2020', '2', '1', '4');
+insert into [Order]
+values ('3/6/2020', '4', '1', '1');
+insert into [Order]
+values ('2/25/2020', '4', '2', '1');
+insert into [Order]
+values ('2/26/2020', '3', '1', '6');
+insert into [Order]
+values ('1/9/2020', '2', '1', '7');
+insert into [Order]
+values ('1/11/2020', '4', '1', '6');
+insert into [Order]
+values ('1/20/2020', '3', '1', '1');
+insert into [Order]
+values ('2/21/2020', '1', '2', '5');
+insert into [Order]
+values ('2/5/2020', '1', '2', '1');
+insert into [Order]
+values ('3/25/2020', '3', '1', '3');
+insert into [Order]
+values ('3/27/2020', '4', '2', '2');
+insert into [Order]
+values ('3/28/2020', '3', '2', '5');
+insert into [Order]
+values ('5/22/2020', '1', '2', '4');
+insert into [Order]
+values ('6/1/2020', '4', '1', '3');
+insert into [Order]
+values ('6/5/2020', '3', '2', '5');
+insert into [Order]
+values ('6/11/2020', '1', '2', '1');
+insert into [Order]
+values ('6/14/2020', '1', '2', '3');
+insert into [Order]
+values ('6/18/2020', '2', '2', '6');
+insert into [Order]
+values ('6/26/2020', '2', '2', '6');
+insert into [Order]
+values ('6/24/2020', '2', '2', '2');
+insert into [Order]
+values ('2/2/2020', '2', '1', '3');
+insert into [Order]
+values ('2/12/2020', '1', '1', '3');
+insert into [Order]
+values ('6/23/2020', '4', '1', '4');
+insert into [Order]
+values ('6/18/2020', '4', '2', '1');
+insert into [Order]
+values ('3/6/2020', '3', '1', '1');
+insert into [Order]
+values ('3/3/2020', '2', '1', '4');
+insert into [Order]
+values ('2/21/2020', '4', '1', '1');
+insert into [Order]
+values ('3/3/2020', '4', '2', '1');
+insert into [Order]
+values ('6/18/2020', '3', '1', '6');
+insert into [Order]
+values ('6/23/2020', '2', '1', '7');
+insert into [Order]
+values ('1/11/2020', '4', '1', '6');
+insert into [Order]
+values ('6/14/2020', '3', '1', '1');
+insert into [Order]
+values ('2/21/2020', '1', '2', '5');
+insert into [Order]
+values ('2/5/2020', '1', '2', '1');
+insert into [Order]
+values ('3/25/2020', '3', '1', '3');
+insert into [Order]
+values ('6/23/2020', '4', '2', '2');
+insert into [Order]
+values ('3/28/2020', '3', '2', '5');
+insert into [Order]
+values ('5/22/2020', '1', '2', '4');
+insert into [Order]
+values ('2/21/2020', '4', '1', '3');
+insert into [Order]
+values ('6/5/2020', '3', '2', '5');
+insert into [Order]
+values ('6/23/2020', '1', '2', '1');
+insert into [Order]
+values ('6/14/2020', '1', '2', '3');
+insert into [Order]
+values ('6/18/2020', '2', '2', '6');
+insert into [Order]
+values ('6/23/2020', '2', '2', '6');
+insert into [Order]
+values ('6/24/2020', '2', '2', '2');
+insert into [Order]
+values ('6/18/2020', '2', '1', '3');
+insert into [Order]
+values ('6/18/2020', '1', '1', '3');
+insert into [Order]
+values ('6/23/2020', '4', '1', '4');
 
 insert into [Title]
 values ('Mr');

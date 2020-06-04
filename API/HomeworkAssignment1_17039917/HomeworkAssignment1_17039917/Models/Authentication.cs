@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Dynamic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -13,8 +15,7 @@ namespace HomeworkAssignment1_17039917.Models
     {
         public HomeworkAssignment3_17039917Entities2 db = new HomeworkAssignment3_17039917Entities2();
         User x = new User();
-
-        //Refresh user GUID
+    
         public User NewGUID(User obj)
         {
             if (obj != null)
@@ -26,16 +27,15 @@ namespace HomeworkAssignment1_17039917.Models
                     return (NewGUID(obj));
                 else
                 {
-                    x = db.Users.Where(z => z.UserID == obj.UserID).FirstOrDefault();
-                    db.Entry(x).CurrentValues.SetValues(obj);
+                    User user = db.Users.Where(z => z.UserID == obj.UserID).FirstOrDefault();      
+                    db.Entry(user).CurrentValues.SetValues(obj);
                     db.SaveChanges();
-                    return (x);
+                    return (user);
                 }
             }
             return null;
         }
-
-        //Refresh user GUID
+    
         public User RefreshGUIDdate(User obj)
         {
             if (obj != null)
@@ -50,8 +50,7 @@ namespace HomeworkAssignment1_17039917.Models
             }
             return null;
         }
-
-        //Authenticate user GUID
+       
         public bool isLoggedIn(string guid)
         {
             if (guid != null)
@@ -70,38 +69,38 @@ namespace HomeworkAssignment1_17039917.Models
             }
             return false;
         }
-
-        //Authorize users login credentials
-        public User Login(User obj)
+  
+        public object Login(User objUser)
         {
             try
             {
                 db.Configuration.ProxyCreationEnabled = false;
-                var hashedPasswword = this.ComputeSha256Hash(obj.UserPassword);
-                var user = NewGUID(db.Users.Where(x => x.UserEmail == obj.UserEmail && x.UserPassword == hashedPasswword).SingleOrDefault());
+                var hashedPasswword = this.ComputeSha256Hash(objUser.UserPassword);
+                var user = NewGUID(db.Users.Where(y => y.UserEmail == objUser.UserEmail && y.UserPassword == hashedPasswword).FirstOrDefault());   
                 return (user);          
             }
             catch
             {
-
-            }
-            return null;
+                dynamic obj = new ExpandoObject();
+                obj.Error = ("Login credentials incorrect. Please try again.");
+                return obj;
+            }           
         }
-
-        //Logout user
-        public User Logout(string guid)
+         
+        public bool Logout(string guid)
         {
-          User user = db.Users.Where(x => x.GUID == guid).FirstOrDefault();
+            User user = db.Users.Where(x => x.GUID == guid).FirstOrDefault();
             if (isLoggedIn(guid))
             {
-                user = null;
-                return user;
-            }
-            
-            return user;
+                user.GUID = null;
+                user.GUIDExpiry = null;
+                db.Entry(user).CurrentValues.SetValues(user);
+                db.SaveChanges();     
+                return true;
+            }            
+            return false;
         }
-
-        //Hash password
+      
         public string ComputeSha256Hash(string rawData)
         {
             using (SHA256 sha256Hash = SHA256.Create())

@@ -76,13 +76,23 @@ namespace HomeworkAssignment1_17039917.Models
             {
                 db.Configuration.ProxyCreationEnabled = false;
                 var hashedPasswword = this.ComputeSha256Hash(objUser.UserPassword);
-                var user = NewGUID(db.Users.Where(y => y.UserEmail == objUser.UserEmail && y.UserPassword == hashedPasswword).FirstOrDefault());   
-                return (user);          
+                var obj = NewGUID(db.Users.Where(y => y.UserEmail == objUser.UserEmail && y.UserPassword == hashedPasswword).FirstOrDefault());   
+                if (obj != null)
+                {
+                    return (obj);
+                }
+                else
+                {
+                    dynamic objE = new ExpandoObject();
+                    objE.Error = ("Login credentials incorrect. Please try again.");
+                    return objE;
+                }
+              
             }
             catch
             {
                 dynamic obj = new ExpandoObject();
-                obj.Error = ("Login credentials incorrect. Please try again.");
+                obj.Error = ("Please try again.");
                 return obj;
             }           
         }

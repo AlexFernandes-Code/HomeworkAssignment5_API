@@ -302,9 +302,9 @@ namespace HomeworkAssignment1_17039917.Controllers
             {      
                 if (objUser != null)
                 {
-                    dynamic user = new ExpandoObject();
-                    user = Auth.Login(objUser);
-                   return user;
+                    dynamic obj = new ExpandoObject();
+                    obj = Auth.Login(objUser);
+                    return obj;
                 }
                 else
                 {

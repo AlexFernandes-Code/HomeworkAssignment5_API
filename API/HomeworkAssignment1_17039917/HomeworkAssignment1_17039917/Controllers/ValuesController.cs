@@ -371,9 +371,11 @@ namespace HomeworkAssignment1_17039917.Controllers
 
         [System.Web.Http.Route("api/getReportData")]
         [HttpGet]
-        public List<JObject> getReportData()
+        public object getReportData(string guid)
         {
-       
+
+            if (Auth.isLoggedIn(guid))
+            {
                 SqlConnection myConnection = new SqlConnection("Data Source=.;Initial Catalog=HomeworkAssignment3_17039917;Integrated Security=True");
                 List<JObject> listReportData = new List<JObject>();
                 myConnection.Open();
@@ -388,7 +390,14 @@ namespace HomeworkAssignment1_17039917.Controllers
                 listReportData.Add(obj);
                 }
                 myConnection.Close();
-                return listReportData;        
+                return listReportData;
+            }
+            else
+            {
+                dynamic obj = new ExpandoObject();
+                obj.Error = ("Invalid Token. Please Re-Login.");
+                return obj;
+            }
         }
 
     }
